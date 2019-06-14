@@ -1,0 +1,56 @@
+#!/usr/bin/env php
+<?php
+
+date_default_timezone_set('UTC');
+
+set_time_limit(0);
+
+if ((!$classloader = @include_once __DIR__.'/../vendor/autoload.php') &&
+    (!$classloader = @include_once __DIR__.'/../../../autoload.php')
+) {
+    file_put_contents('php://stderr', "You must set up the RR dependencies with Composer.\n".
+        "Run the following command at the RR root folder:\n\n composer update\n\n"
+    );
+
+    exit(1);
+}
+
+if (PHP_VERSION_ID < 70200) {
+    file_put_contents('php://stderr', sprintf(
+        "RR requires PHP 7.2 version or higher and your system has\n".
+        "PHP %s version installed.\n\n",
+        PHP_VERSION
+    ));
+
+    exit(1);
+}
+
+if (function_exists('ini_set')) {
+    @ini_set('display_errors', 1);
+    $memoryInBytes = function ($value) {
+        $unit = strtolower(substr($value, -1, 1));
+        $value = (int) $value;
+        switch($unit) {
+            case 'g':
+                $value *= 1024;
+            case 'm':
+                $value *= 1024;
+            case 'k':
+                $value *= 1024;
+        }
+        return $value;
+    };
+
+    $memoryLimit = trim(ini_get('memory_limit'));
+
+    if ($memoryLimit != -1 && $memoryInBytes($memoryLimit) < 1024 * 1024 * 1024) {
+        @ini_set('memory_limit', '512M');
+    }
+
+    unset($memoryInBytes, $memoryLimit);
+}
+
+use RecipeRunner\Cli\CliInterface\Application;
+
+$app = new Application();
+$app->run();
