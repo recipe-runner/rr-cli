@@ -119,7 +119,14 @@ class DependencyManager
         $baseDir = $this->workingDirectory->getRecipeInternalDirectory($recipeName);
         $autoloadFile = $baseDir.'/vendor/autoload.php';
 
-        require_once $autoloadFile;
+        $composerClassLoader = require_once $autoloadFile;
+        $this->registerRecipeDependenciesClassLoaderAtTheEnd($composerClassLoader);
+    }
+
+    private function registerRecipeDependenciesClassLoaderAtTheEnd($composerClassLoader): void
+    {
+        $composerClassLoader->unregister();
+        $composerClassLoader->register(false);
     }
 
     private function generateManifestContent(array $nameVersionPairs): string
