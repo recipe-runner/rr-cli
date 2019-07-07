@@ -14,8 +14,20 @@ namespace RecipeRunner\Cli\Application\RunRecipe;
 use InvalidArgumentException;
 use SplFileInfo;
 
+/**
+ * Recipe name extractor.
+ *
+ * @author Víctor Puertas <vpgugr@gmail.com>
+ */
 class RecipeNameExtractor
 {
+    /**
+     * Returns the recipe name without extension.
+     *
+     * @param string $recipeFilename The recipe filename. e.g: "myrecipe.rr.yml"
+     *
+     * @return string Recipe name. e.g: "myrecipe.rr"
+     */
     public function extractNameFromFilename(string $recipeFilename): string
     {
         $fileInfo = new SplFileInfo($recipeFilename);

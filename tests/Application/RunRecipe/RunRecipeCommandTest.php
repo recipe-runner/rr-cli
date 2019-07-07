@@ -16,6 +16,8 @@ use RecipeRunner\Cli\Application\RunRecipe\RecipeNameExtractor;
 use RecipeRunner\Cli\Application\RunRecipe\RunRecipeCommand;
 use RecipeRunner\Cli\Core\DependencyManager\DependencyManager;
 use RecipeRunner\Cli\Core\RecipeRunner\RecipeRunnerManagerInterface;
+use RecipeRunner\Cli\Core\RecipeVariable\RecipeVariableGeneratorInterface;
+use Yosymfony\Collection\MixedCollection;
 
 class RunRecipeCommandTest extends TestCase
 {
@@ -28,22 +30,36 @@ class RunRecipeCommandTest extends TestCase
     /** @var RecipeRunnerManagerInterface */
     private $recipeRunnerManagerMock;
 
+    /** @var MixedCollection */
+    private $variables;
+
+    /** @var MixedCollection */
+    private $commonVariables;
+
+    private $recipeName;
+    private $recipeFilename;
+
     public function setUp(): void
     {
+        $this->recipeName = 'myRecipe';
+        $this->recipeFilename = "{$this->recipeName}.yml";
+        $this->commonVariables = new MixedCollection();
+        $this->variables = new MixedCollection();
         $this->dependencyManagerMock = $this->getMockBuilder(DependencyManager::class)->disableOriginalConstructor()->getMock();
         $this->recipeRunnerManagerMock = $this->getMockBuilder(RecipeRunnerManagerInterface::class)->getMock();
         $recipeNameExtractor = new RecipeNameExtractor();
+        $recipeVariableGeneratorInterfaceMock = $this->createMock(RecipeVariableGeneratorInterface::class);
+        $recipeVariableGeneratorInterfaceMock->method('generateVariablesForRecipe')->willReturn($this->commonVariables);
         $this->runRecipeCommand = new RunRecipeCommand(
             $this->dependencyManagerMock,
             $this->recipeRunnerManagerMock,
-            $recipeNameExtractor
+            $recipeNameExtractor,
+            $recipeVariableGeneratorInterfaceMock
         );
     }
 
     public function testExecuteMustPassTheVariablesToRecipeRunner(): void
     {
-        $recipeName = 'myRecipe';
-        $recipeFilename = "{$recipeName}.yml";
         $packages = [];
         $modules = [];
 
@@ -51,26 +67,46 @@ class RunRecipeCommandTest extends TestCase
             ->method('getDependenciesFromRecipe')
             ->willReturn($packages);
 
-        $variables = [
-            'recipe-path' => '/test',
-        ];
+        $this->variables->add('recipe-path', '/test');
 
         $this->recipeRunnerManagerMock
             ->expects($this->once())
             ->method('executeRecipe')
             ->with(
-                $this->equalTo($recipeFilename),
-                $this->equalTo($variables),
+                $this->equalTo($this->recipeFilename),
+                $this->equalTo($this->commonVariables->union($this->variables)),
                 $this->equalTo($modules)
             );
 
-        $this->runRecipeCommand->execute($recipeFilename, $variables);
+        $this->runRecipeCommand->execute($this->recipeFilename, $this->variables);
+    }
+
+    public function testExecuteMustPassTheCommonVariablesPlusRecipeVariablesToRecipeRunner(): void
+    {
+        $packages = [];
+        $modules = [];
+
+        $this->recipeRunnerManagerMock
+            ->method('getDependenciesFromRecipe')
+            ->willReturn($packages);
+
+        $this->variables->add('recipe-path', '/test');
+        $this->commonVariables->add('os_family', 'myOS');
+
+        $this->recipeRunnerManagerMock
+            ->expects($this->once())
+            ->method('executeRecipe')
+            ->with(
+                $this->equalTo($this->recipeFilename),
+                $this->equalTo($this->commonVariables->union($this->variables)),
+                $this->equalTo($modules)
+            );
+
+        $this->runRecipeCommand->execute($this->recipeFilename, $this->variables);
     }
 
     public function testExecuteMustInstallDependenciesOfARecipeWhenTheRecipeHaveDependencies(): void
     {
-        $recipeName = 'myRecipe';
-        $recipeFilename = "{$recipeName}.yml";
         $packages = ['vendorPackage1/module1'];
         $modules = ['Vendor/ModuleClass1'];
         $this->recipeRunnerManagerMock
@@ -81,7 +117,7 @@ class RunRecipeCommandTest extends TestCase
             ->expects($this->once())
             ->method('isNecessaryUpdate')
             ->with(
-                $this->equalTo($recipeName),
+                $this->equalTo($this->recipeName),
                 $this->equalTo($packages)
             )->willReturn(true);
 
@@ -89,21 +125,21 @@ class RunRecipeCommandTest extends TestCase
             ->expects($this->once())
             ->method('generateManifestFile')
             ->with(
-                $this->equalTo($recipeName)
+                $this->equalTo($this->recipeName)
             );
 
         $this->dependencyManagerMock
             ->expects($this->once())
             ->method('update')
             ->with(
-                $this->equalTo($recipeName)
+                $this->equalTo($this->recipeName)
             );
 
         $this->dependencyManagerMock
             ->expects($this->once())
             ->method('getModuleClassNamesInstalled')
             ->with(
-                $this->equalTo($recipeName)
+                $this->equalTo($this->recipeName)
             )
             ->willReturn($modules);
 
@@ -111,25 +147,23 @@ class RunRecipeCommandTest extends TestCase
             ->expects($this->once())
             ->method('loadAutoloader')
             ->with(
-                $this->equalTo($recipeName)
+                $this->equalTo($this->recipeName)
             );
 
         $this->recipeRunnerManagerMock
             ->expects($this->once())
             ->method('executeRecipe')
             ->with(
-                $this->equalTo($recipeFilename),
-                $this->equalTo([]),
+                $this->equalTo($this->recipeFilename),
+                $this->equalTo($this->variables),
                 $this->equalTo($modules)
             );
 
-        $this->runRecipeCommand->execute($recipeFilename);
+        $this->runRecipeCommand->execute($this->recipeFilename, $this->variables);
     }
 
     public function testExecuteRecipeMustOnlyLoadAutoloaderAndGetModuleClassNamesInstalledWhenThereAreDependenciesButTheyDoNotNeedToBeUpdated(): void
     {
-        $recipeName = 'myRecipe';
-        $recipeFilename = "{$recipeName}.yml";
         $packages = ['vendorPackage1/module1'];
         $modules = ['Vendor/ModuleClass1'];
         $this->recipeRunnerManagerMock
@@ -140,7 +174,7 @@ class RunRecipeCommandTest extends TestCase
             ->expects($this->once())
             ->method('isNecessaryUpdate')
             ->with(
-                $this->equalTo($recipeName),
+                $this->equalTo($this->recipeName),
                 $this->equalTo($packages)
             )->willReturn(false);
 
@@ -156,7 +190,7 @@ class RunRecipeCommandTest extends TestCase
             ->expects($this->once())
             ->method('getModuleClassNamesInstalled')
             ->with(
-                $this->equalTo($recipeName)
+                $this->equalTo($this->recipeName)
             )
             ->willReturn($modules);
 
@@ -164,19 +198,19 @@ class RunRecipeCommandTest extends TestCase
             ->expects($this->once())
             ->method('loadAutoloader')
             ->with(
-                $this->equalTo($recipeName)
+                $this->equalTo($this->recipeName)
             );
 
         $this->recipeRunnerManagerMock
             ->expects($this->once())
             ->method('executeRecipe')
             ->with(
-                $this->equalTo($recipeFilename),
-                $this->equalTo([]),
+                $this->equalTo($this->recipeFilename),
+                $this->equalTo($this->variables),
                 $this->equalTo($modules)
             );
 
-        $this->runRecipeCommand->execute($recipeFilename);
+        $this->runRecipeCommand->execute($this->recipeFilename, $this->variables);
     }
 
     public function testExecuteMustNotInstallAnyDependencyWhenTheRecipeDoesNotHaveDependencies(): void
@@ -210,10 +244,10 @@ class RunRecipeCommandTest extends TestCase
             ->method('executeRecipe')
             ->with(
                 $this->equalTo($recipeFilename),
-                $this->equalTo([]),
+                $this->equalTo($this->variables),
                 $this->equalTo($modules)
             );
 
-        $this->runRecipeCommand->execute($recipeFilename);
+        $this->runRecipeCommand->execute($recipeFilename, $this->variables);
     }
 }

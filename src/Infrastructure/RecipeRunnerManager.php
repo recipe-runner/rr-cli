@@ -17,9 +17,16 @@ use RecipeRunner\Cli\Core\WorkingDirectory\WorkingDirectory;
 use RecipeRunner\RecipeRunner\Definition\RecipeDefinition;
 use RecipeRunner\RecipeRunner\Definition\RecipeMaker\YamlRecipeMaker;
 use RecipeRunner\RecipeRunner\IO\IOInterface;
+use RecipeRunner\RecipeRunner\Recipe\StandardRecipeVariables;
 use RecipeRunner\RecipeRunner\Setup\QuickStart;
+use Yosymfony\Collection\CollectionInterface;
 use Yosymfony\Collection\MixedCollection;
 
+/**
+ * Represent the actions availables with Recipe Runner core.
+ *
+ * @author Víctor Puertas <vpgugr@gmail.com>
+ */
 class RecipeRunnerManager implements RecipeRunnerManagerInterface
 {
     /** @var IOInterface */
@@ -47,19 +54,27 @@ class RecipeRunnerManager implements RecipeRunnerManagerInterface
             throw new InvalidArgumentException('Invalid value: extra value "rr.packages" must be an array.');
         }
 
-        return $result; //['recipe-runner/io-module' => '1.0.x-dev'];
+        return $result;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function executeRecipe(string $recipeFilename, array $recipeVariables = [], array $classNameModules = []): void
+    public function executeRecipe(string $recipeFilename, CollectionInterface $recipeVariables = null, array $classNameModules = []): void
     {
         $moduleCollection = $this->createModuleInstances($classNameModules);
         $recipe = $this->makeRecipeDefinitionFromFilename($recipeFilename);
         $recipeParser = QuickStart::Create($moduleCollection, $this->io);
         
-        $recipeParser->parse($recipe, new MixedCollection($recipeVariables));
+        $recipeParser->parse($recipe, $recipeVariables ?? new MixedCollection());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getStandardVariables(): CollectionInterface
+    {
+        return StandardRecipeVariables::getCollectionOfVariables();
     }
 
     private function createModuleInstances(array $classNameModules): MixedCollection

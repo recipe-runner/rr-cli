@@ -14,6 +14,11 @@ namespace RecipeRunner\Cli\CliInterface;
 use RecipeRunner\Cli\CliInterface\Command;
 use Symfony\Component\Console\Application as BaseApplication;
 
+/**
+ * Application for Symfony console.
+ *
+ * @author Víctor Puertas <vpgugr@gmail.com>
+ */
 class Application extends BaseApplication
 {
     const VERSION = '0.0.1';

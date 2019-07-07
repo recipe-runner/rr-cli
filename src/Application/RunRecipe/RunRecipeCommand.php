@@ -14,7 +14,14 @@ namespace RecipeRunner\Cli\Application\RunRecipe;
 use RecipeRunner\Cli\Application\RunRecipe\RecipeNameExtractor;
 use RecipeRunner\Cli\Core\DependencyManager\DependencyManager;
 use RecipeRunner\Cli\Core\RecipeRunner\RecipeRunnerManagerInterface;
+use RecipeRunner\Cli\Core\RecipeVariable\RecipeVariableGeneratorInterface;
+use Yosymfony\Collection\CollectionInterface;
 
+/**
+ * Run recipe command.
+ *
+ * @author Víctor Puertas <vpgugr@gmail.com>
+ */
 class RunRecipeCommand
 {
     /** @var DependencyManager */
@@ -26,22 +33,26 @@ class RunRecipeCommand
     /** @var RecipeNameExtractor */
     private $recipeNameExtractor;
 
-    public function __construct(DependencyManager $dependencyManager, RecipeRunnerManagerInterface $recipeRunnerManager, RecipeNameExtractor $recipeNameExtractor)
+    /** @var RecipeVariableGeneratorInterface */
+    private $commonRecipeVariablesGenerator;
+
+    public function __construct(DependencyManager $dependencyManager, RecipeRunnerManagerInterface $recipeRunnerManager, RecipeNameExtractor $recipeNameExtractor, RecipeVariableGeneratorInterface $commonRecipeVariablesGenerator)
     {
         $this->dependencyManager = $dependencyManager;
         $this->recipeRunnerManager = $recipeRunnerManager;
         $this->recipeNameExtractor = $recipeNameExtractor;
+        $this->commonRecipeVariablesGenerator = $commonRecipeVariablesGenerator;
     }
 
     /**
      * Executes a recipe.
      *
      * @param string $recipeFilename The filename with the recipe. e.g: my-recipe.yml
-     * @param array $recipeVariables Set of variables available for the recipe.
+     * @param CollectionInterface $executionVariables Set of variables available for recipe.
      *
      * @return void
      */
-    public function execute(string $recipeFilename, array $recipeVariables = []): void
+    public function execute(string $recipeFilename, CollectionInterface $executionVariables): void
     {
         $moduleClassNames = [];
         $recipeName = $this->recipeNameExtractor->extractNameFromFilename($recipeFilename);
@@ -57,6 +68,8 @@ class RunRecipeCommand
             $this->dependencyManager->loadAutoloader($recipeName);
         }
 
-        $this->recipeRunnerManager->executeRecipe($recipeFilename, $recipeVariables, $moduleClassNames);
+        $finalRecipeVariables = $this->commonRecipeVariablesGenerator->generateVariablesForRecipe($recipeName)->union($executionVariables);
+
+        $this->recipeRunnerManager->executeRecipe($recipeFilename, $finalRecipeVariables, $moduleClassNames);
     }
 }

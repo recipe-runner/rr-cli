@@ -11,6 +11,8 @@
 
 namespace RecipeRunner\Cli\Core\RecipeRunner;
 
+use Yosymfony\Collection\CollectionInterface;
+
 /**
  * Interface for handling Recipe Runner Core
  */
@@ -29,10 +31,17 @@ interface RecipeRunnerManagerInterface
      * Executes a recipe.
      *
      * @param string $recipeName
-     * @param array $recipeVariables
+     * @param CollectionInterface $recipeVariables
      * @param array $classNameModules
      *
      * @return void
      */
-    public function executeRecipe(string $recipeName, array $recipeVariables = [], array $classNameModules = []): void;
+    public function executeRecipe(string $recipeName, CollectionInterface $recipeVariables = null, array $classNameModules = []): void;
+
+    /**
+     * Returns the collection of standard variables.
+     *
+     * @return CollectionInterface
+     */
+    public function getStandardVariables(): CollectionInterface;
 }

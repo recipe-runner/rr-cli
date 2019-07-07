@@ -16,6 +16,11 @@ use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem as FilesystemBase;
 
+/**
+ * Filesystem operations.
+ *
+ * @author Víctor Puertas <vpgugr@gmail.com>
+ */
 class Filesystem implements FilesystemInterface
 {
     /** @var FilesystemBase */

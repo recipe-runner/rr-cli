@@ -37,6 +37,16 @@ class WorkingDirectory
     }
 
     /**
+     * Returns the working directory.
+     *
+     * @return string
+     */
+    public function getWorkingDirectory(): string
+    {
+        return $this->workingDir;
+    }
+
+    /**
      * Write a file in the recipe internal directory.
      *
      * @param string $recipeName The name of the recipe.
@@ -87,7 +97,6 @@ class WorkingDirectory
 
         return $this->fs->readFile($filename);
     }
-
 
     /**
      * Check if a file exists in the recipe internal directory.

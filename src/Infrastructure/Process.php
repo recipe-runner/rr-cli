@@ -18,6 +18,11 @@ use Symfony\Component\Process\ExecutableFinder;
 use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Process\Process as SymfonyProcess;
 
+/**
+ * Process runner.
+ *
+ * @author Víctor Puertas <vpgugr@gmail.com>
+ */
 class Process implements ProcessInterface
 {
     /** @var IOInterface */

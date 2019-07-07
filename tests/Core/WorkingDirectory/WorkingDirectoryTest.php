@@ -24,6 +24,14 @@ class WorkingDirectoryTest extends TestCase
         $this->filesystemMock = $this->getMockBuilder(FilesystemInterface::class)->getMock();
     }
 
+    public function testGetWorkingDirMustReturnTheWorkingDirectory(): void
+    {
+        $workingDir = '/mypath';
+        $wd = new WorkingDirectory($workingDir, $this->filesystemMock);
+
+        $this->assertEquals($workingDir, $wd->getWorkingDirectory());
+    }
+
     public function testWriteRecipeInternalFileMustCreateTheFileWithTheContent(): void
     {
         $recipeName = 'myrecipe';
