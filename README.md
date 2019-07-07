@@ -7,6 +7,7 @@
 ## Requires
 
 * PHP +7.2
+* Composer +1.8
 
 ## Installation
 
