@@ -15,7 +15,6 @@ use RecipeRunner\Cli\Core\Process\ProcessInterface;
 use RecipeRunner\RecipeRunner\IO\IOInterface;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\ExecutableFinder;
-use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Process\Process as SymfonyProcess;
 
 /**
@@ -40,8 +39,7 @@ class Process implements ProcessInterface
      */
     public function runPHPScript(string $command, array $arguments = [], string $workingDir = null): void
     {
-        $phpBinaryPath = $this->guessExecutablePHPBinaryPath();
-        $finalCommand = \array_merge([$phpBinaryPath, $command], $arguments);
+        $finalCommand = \array_merge([$command], $arguments);
         $process = new SymfonyProcess($finalCommand, $workingDir);
         $process->start();
 
@@ -67,17 +65,5 @@ class Process implements ProcessInterface
         $executableFinder = new ExecutableFinder();
         
         return $executableFinder->find($name);
-    }
-
-    private function guessExecutablePHPBinaryPath(): string
-    {
-        if ($this->phpBinaryPath !== null) {
-            return $this->phpBinaryPath;
-        }
-
-        $phpBinaryFinder = new PhpExecutableFinder();
-        $this->phpBinaryPath = $phpBinaryFinder->find();
-
-        return $this->phpBinaryPath;
     }
 }
