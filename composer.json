@@ -27,6 +27,11 @@
     "autoload": {
         "psr-4": { "RecipeRunner\\Cli\\": "src" }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "RecipeRunner\\Cli\\Test\\": "tests"
+        }
+    },
     "extra": {
         "branch-alias": {
             "dev-master": "1.0-dev"
