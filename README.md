@@ -1,6 +1,5 @@
 # RR - Recipe Runner CLI tool
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/recipe-runner/rr-cli.svg?style=flat-square)](https://packagist.org/packages/recipe-runner/rr-cli)
 [![Build Status](https://img.shields.io/travis/recipe-runner/rr-cli/master.svg?style=flat-square)](https://travis-ci.org/recipe-runner/rr-cli)
 
 
