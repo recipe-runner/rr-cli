@@ -12,13 +12,26 @@
 namespace RecipeRunner\Cli\Infrastructure;
 
 use InvalidArgumentException;
+use RecipeRunner\Cli\Core\RecipeRunner\IOActionParserDecorator;
+use RecipeRunner\Cli\Core\RecipeRunner\IOModuleDecorator;
+use RecipeRunner\Cli\Core\RecipeRunner\IORecipeParserDecorator;
+use RecipeRunner\Cli\Core\RecipeRunner\IOStepParserDecorator;
 use RecipeRunner\Cli\Core\RecipeRunner\RecipeRunnerManagerInterface;
 use RecipeRunner\Cli\Core\WorkingDirectory\WorkingDirectory;
+use RecipeRunner\RecipeRunner\Adapter\Expression\SymfonyExpressionLanguage;
+use RecipeRunner\RecipeRunner\Block\Action\ActionParser;
+use RecipeRunner\RecipeRunner\Block\Action\ActionParserInterface;
+use RecipeRunner\RecipeRunner\Block\BlockCommonOperation;
+use RecipeRunner\RecipeRunner\Block\Step\StepParser;
+use RecipeRunner\RecipeRunner\Block\Step\StepParserInterface;
 use RecipeRunner\RecipeRunner\Definition\RecipeDefinition;
 use RecipeRunner\RecipeRunner\Definition\RecipeMaker\YamlRecipeMaker;
 use RecipeRunner\RecipeRunner\IO\IOInterface;
+use RecipeRunner\RecipeRunner\Module\BuiltIn\EssentialModule;
+use RecipeRunner\RecipeRunner\Module\ModuleMethodExecutor;
+use RecipeRunner\RecipeRunner\Recipe\RecipeParser;
+use RecipeRunner\RecipeRunner\Recipe\RecipeParserInterface;
 use RecipeRunner\RecipeRunner\Recipe\StandardRecipeVariables;
-use RecipeRunner\RecipeRunner\Setup\QuickStart;
 use Yosymfony\Collection\CollectionInterface;
 use Yosymfony\Collection\MixedCollection;
 
@@ -46,7 +59,7 @@ class RecipeRunnerManager implements RecipeRunnerManagerInterface
      */
     public function getDependenciesFromRecipe(string $recipeFilename): array
     {
-        $recipeDefinition = $this->makeRecipeDefinitionFromFilename($recipeFilename);
+        $recipeDefinition = $this->createRecipeDefinitionFromFilename($recipeFilename);
 
         $result = $recipeDefinition->getExtra()->getDot('rr.packages', []);
 
@@ -63,8 +76,8 @@ class RecipeRunnerManager implements RecipeRunnerManagerInterface
     public function executeRecipe(string $recipeFilename, CollectionInterface $recipeVariables = null, array $classNameModules = []): void
     {
         $moduleCollection = $this->createModuleInstances($classNameModules);
-        $recipe = $this->makeRecipeDefinitionFromFilename($recipeFilename);
-        $recipeParser = QuickStart::Create($moduleCollection, $this->io);
+        $recipe = $this->createRecipeDefinitionFromFilename($recipeFilename);
+        $recipeParser = $this->createRecipeRunner($moduleCollection);
         
         $recipeParser->parse($recipe, $recipeVariables ?? new MixedCollection());
     }
@@ -88,10 +101,55 @@ class RecipeRunnerManager implements RecipeRunnerManagerInterface
         return new MixedCollection($moduleInstances);
     }
 
-    private function makeRecipeDefinitionFromFilename(string $recipeFilename): RecipeDefinition
+    private function createRecipeDefinitionFromFilename(string $recipeFilename): RecipeDefinition
     {
         $ymlRecipeMaker = new YamlRecipeMaker();
 
         return $ymlRecipeMaker->makeRecipeFromString($this->workingDirectory->readFile($recipeFilename));
+    }
+
+    private function createRecipeRunner(CollectionInterface $modules = null): RecipeParserInterface
+    {
+        $io = new IOModuleDecorator($this->io);
+        $finalModules = $this->composeListOfModules($modules);
+        $expressionResolver = new SymfonyExpressionLanguage();
+        $blockCommonOperation = new BlockCommonOperation($expressionResolver);
+        $methodExecutor = new ModuleMethodExecutor($finalModules, $expressionResolver, $io);
+        $actionParser = $this->createActionParser($blockCommonOperation, $methodExecutor);
+        $stepParser = $this->createStepParser($actionParser, $blockCommonOperation);
+        $recipeParser = $this->createRecipeParser($stepParser);
+
+        return $recipeParser;
+    }
+
+    private function composeListOfModules(?CollectionInterface $moduleCollection): CollectionInterface
+    {
+        $finalModuleCollection = new MixedCollection([new EssentialModule()]);
+        
+        if ($moduleCollection !== null) {
+            $finalModuleCollection->addRangeOfValues($moduleCollection);
+        }
+        return $finalModuleCollection;
+    }
+
+    private function createStepParser(ActionParserInterface $actionParser, BlockCommonOperation $blockCommonOperation): StepParserInterface
+    {
+        $stepParser = new StepParser($actionParser, $blockCommonOperation);
+
+        return new IOStepParserDecorator($this->io, $stepParser);
+    }
+
+    private function createActionParser(BlockCommonOperation $blockCommonOperation, ModuleMethodExecutor $methodExecutor): ActionParserInterface
+    {
+        $actionParser = new ActionParser($blockCommonOperation, $methodExecutor);
+
+        return new IOActionParserDecorator($this->io, $actionParser);
+    }
+
+    private function createRecipeParser(StepParserInterface $stepParser): RecipeParserInterface
+    {
+        $recipeParser = new RecipeParser($stepParser);
+
+        return new IORecipeParserDecorator($this->io, $recipeParser);
     }
 }
