@@ -15,6 +15,7 @@ use RecipeRunner\Cli\Application\RunRecipe\RecipeNameExtractor;
 use RecipeRunner\Cli\Core\DependencyManager\DependencyManager;
 use RecipeRunner\Cli\Core\RecipeRunner\RecipeRunnerManagerInterface;
 use RecipeRunner\Cli\Core\RecipeVariable\RecipeVariableGeneratorInterface;
+use RecipeRunner\RecipeRunner\IO\IOInterface;
 use Yosymfony\Collection\CollectionInterface;
 
 /**
@@ -36,12 +37,16 @@ class RunRecipeCommand
     /** @var RecipeVariableGeneratorInterface */
     private $commonRecipeVariablesGenerator;
 
-    public function __construct(DependencyManager $dependencyManager, RecipeRunnerManagerInterface $recipeRunnerManager, RecipeNameExtractor $recipeNameExtractor, RecipeVariableGeneratorInterface $commonRecipeVariablesGenerator)
+    /** @var IOInterface */
+    private $io;
+
+    public function __construct(DependencyManager $dependencyManager, RecipeRunnerManagerInterface $recipeRunnerManager, RecipeNameExtractor $recipeNameExtractor, RecipeVariableGeneratorInterface $commonRecipeVariablesGenerator, IOInterface $io)
     {
         $this->dependencyManager = $dependencyManager;
         $this->recipeRunnerManager = $recipeRunnerManager;
         $this->recipeNameExtractor = $recipeNameExtractor;
         $this->commonRecipeVariablesGenerator = $commonRecipeVariablesGenerator;
+        $this->io = $io;
     }
 
     /**
@@ -61,6 +66,7 @@ class RunRecipeCommand
         if (count($dependencies) > 0) {
             if ($this->dependencyManager->isNecessaryUpdate($recipeName, $dependencies)) {
                 $this->dependencyManager->generateManifestFile($recipeName, $dependencies);
+                $this->io->write('Resolving dependencies...');
                 $this->dependencyManager->update($recipeName);
             }
 

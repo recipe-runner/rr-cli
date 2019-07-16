@@ -11,12 +11,14 @@
 
 namespace RecipeRunner\Cli\Test\Application\RunRecipe;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use RecipeRunner\Cli\Application\RunRecipe\RecipeNameExtractor;
 use RecipeRunner\Cli\Application\RunRecipe\RunRecipeCommand;
 use RecipeRunner\Cli\Core\DependencyManager\DependencyManager;
 use RecipeRunner\Cli\Core\RecipeRunner\RecipeRunnerManagerInterface;
 use RecipeRunner\Cli\Core\RecipeVariable\RecipeVariableGeneratorInterface;
+use RecipeRunner\RecipeRunner\IO\IOInterface;
 use Yosymfony\Collection\MixedCollection;
 
 class RunRecipeCommandTest extends TestCase
@@ -24,10 +26,10 @@ class RunRecipeCommandTest extends TestCase
     /** @var RunRecipeCommand */
     private $runRecipeCommand;
 
-    /** @var DependencyManager */
+    /** @var MockObject */
     private $dependencyManagerMock;
 
-    /** @var RecipeRunnerManagerInterface */
+    /** @var MockObject */
     private $recipeRunnerManagerMock;
 
     /** @var MixedCollection */
@@ -35,6 +37,9 @@ class RunRecipeCommandTest extends TestCase
 
     /** @var MixedCollection */
     private $commonVariables;
+
+    /** @var MockObject */
+    private $IOInterfaceMock;
 
     private $recipeName;
     private $recipeFilename;
@@ -50,11 +55,13 @@ class RunRecipeCommandTest extends TestCase
         $recipeNameExtractor = new RecipeNameExtractor();
         $recipeVariableGeneratorInterfaceMock = $this->createMock(RecipeVariableGeneratorInterface::class);
         $recipeVariableGeneratorInterfaceMock->method('generateVariablesForRecipe')->willReturn($this->commonVariables);
+        $this->IOInterfaceMock = $this->getMockBuilder(IOInterface::class)->getMock();
         $this->runRecipeCommand = new RunRecipeCommand(
             $this->dependencyManagerMock,
             $this->recipeRunnerManagerMock,
             $recipeNameExtractor,
-            $recipeVariableGeneratorInterfaceMock
+            $recipeVariableGeneratorInterfaceMock,
+            $this->IOInterfaceMock
         );
     }
 
@@ -126,6 +133,13 @@ class RunRecipeCommandTest extends TestCase
             ->method('generateManifestFile')
             ->with(
                 $this->equalTo($this->recipeName)
+            );
+
+        $this->IOInterfaceMock
+            ->expects($this->once())
+            ->method('write')
+            ->with(
+                $this->equalTo('Resolving dependencies...')
             );
 
         $this->dependencyManagerMock

@@ -68,6 +68,6 @@ class RunCommand extends Command
         $currentDirectoryProvider = new CurrentDirectoryProvider();
         $commonRecipeVariableGenerator = new CommonRecipeVariableGenerator($recipeRunner, $workingDirectory, $currentDirectoryProvider);
 
-        return new RunRecipeCommand($dependencyManager, $recipeRunner, $recipeNameExtractor, $commonRecipeVariableGenerator);
+        return new RunRecipeCommand($dependencyManager, $recipeRunner, $recipeNameExtractor, $commonRecipeVariableGenerator, $io);
     }
 }

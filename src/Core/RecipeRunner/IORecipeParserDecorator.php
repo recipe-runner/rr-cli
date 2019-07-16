@@ -41,7 +41,7 @@ final class IORecipeParserDecorator implements RecipeParserInterface
         $this->io->write('');
         $result = $this->recipeParser->parse($recipe, $recipeVariables);
         $this->io->write('');
-        $this->io->write("Running finished.");
+        $this->io->write("Execution finished.");
 
         return $result;
     }
