@@ -41,6 +41,7 @@ class Process implements ProcessInterface
     {
         $finalCommand = \array_merge([$command], $arguments);
         $process = new SymfonyProcess($finalCommand, $workingDir);
+        $process->setTimeout(1800);
         $process->start();
 
         foreach ($process as $type => $data) {
