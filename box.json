@@ -1,0 +1,19 @@
+{
+    "alias": "rr.phar",
+    "chmod": "0755",
+    "directories": [
+        "src"
+    ],
+    "files": [
+        "bin/rr"
+    ],
+    "finder": [
+        {
+            "exclude": ["Tests","tests"],
+            "in": "vendor"
+        }
+    ],
+    "main": "bin/rr",
+    "output": "rr.phar",
+    "stub": true
+}

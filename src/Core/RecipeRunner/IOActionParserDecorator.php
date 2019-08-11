@@ -39,7 +39,25 @@ final class IOActionParserDecorator implements ActionParserInterface
     public function parse(ActionDefinition $action, RecipeVariablesContainer $recipeVariables): BlockResult
     {
         $this->io->write("  + Running action <info>\"{$action->getName()}\"</info>");
+        $result = $this->actionParser->parse($action, $recipeVariables);
+        $this->io->write("    Result: {$this->getFormatedResultString($result)}");
 
-        return $this->actionParser->parse($action, $recipeVariables);
+        return $result;
+    }
+
+    private function getFormatedResultString(BlockResult $blockResult): string
+    {
+        $numberOfIterations = $blockResult->getNumberOfIterations();
+        $iterationsString = "{$numberOfIterations} iteration";
+
+        if ($numberOfIterations != 1) {
+            $iterationsString.'s';
+        }
+
+        if (!$blockResult->hasError()) {
+            return "<fg=black;bg=green>OK ($iterationsString)</>";
+        }
+
+        return "<fg=white;bg=red>ERROR ($iterationsString)</>";
     }
 }

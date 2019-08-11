@@ -55,7 +55,7 @@ class IOActionParserDecoratorTest extends TestCase
 
     public function testMustCallIOWriteMethod(): void
     {
-        $this->ioMock->expects($this->once())->method('write');
+        $this->ioMock->expects($this->exactly(2))->method('write');
 
         $this->ioActionParserDecorator->parse($this->actionDefinitionMock, $this->recipeVariablesContainerMock);
     }

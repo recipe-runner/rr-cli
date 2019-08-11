@@ -1,0 +1,27 @@
+name: "Build RR phar"
+extra:
+  rr:
+    packages:
+      "recipe-runner/system-module": "1.0.x-dev"
+steps:
+  - name: "Infrastructure"
+    actions:
+      - name: "Create working dir"
+        make_dir: "{{temporal_dir}}/rr"
+      - name: "Clone repository"
+        run:
+          command: "git clone https://github.com/recipe-runner/rr-cli.git ."
+          cwd: "{{temporal_dir}}/rr"
+      - name: "Download box - tool for generating phar files"
+        download_file:
+          url: "https://github.com/humbug/box/releases/download/3.8.0/box.phar"
+          filename: "{{temporal_dir}}/rr/box.phar"
+      - name: "Install packages"
+        run:
+          command: "composer install --no-dev --prefer-dist --no-suggest --no-suggest"
+          cwd: "{{temporal_dir}}/rr"
+  - name: "Build phar"
+    actions:
+      - run: 
+          command: "php box.phar compile"
+          cwd: "{{temporal_dir}}/rr"
