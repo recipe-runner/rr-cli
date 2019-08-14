@@ -48,7 +48,7 @@ class IOModuleDecoratorTest extends TestCase
     public function testMustCallWrite(bool $newline, int $verbosity): void
     {
         $message = 'hi';
-        $expected = [$this->composeExptectedText($message)];
+        $expected = $this->composeExptectedText($message);
         $this->ioMock->expects($this->once())->method('write')->with(
             $this->equalTo($expected),
             $this->equalTo($newline),
@@ -56,6 +56,26 @@ class IOModuleDecoratorTest extends TestCase
         );
 
         $this->ioModuleDecorator->write($message, $newline, $verbosity);
+    }
+
+    public function testWriteMustNotAddThePrefixTheSecondTimeWriteIsCalledWithNewlineFalse(): void
+    {
+        $message1 = 'hi';
+        $message2 = 'you';
+        $expected1 = $this->composeExptectedText($message1);
+        $expected2 = $message2;
+        
+        $this->ioMock->expects($this->at(0))->method('write')->with(
+            $this->equalTo($expected1),
+            $this->equalTo(false)
+        );
+        $this->ioMock->expects($this->at(1))->method('write')->with(
+            $this->equalTo($expected2),
+            $this->equalTo(false)
+        );
+
+        $this->ioModuleDecorator->write($message1, false);
+        $this->ioModuleDecorator->write($message2, false);
     }
 
     /**
