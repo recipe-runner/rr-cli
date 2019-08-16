@@ -52,9 +52,10 @@ class RunCommand extends Command
         $io = new ConsoleIO($input, $output, new HelperSet([
             new QuestionHelper(),
         ]));
+        
         $recipeFilename = $input->getArgument('filename');
-        $runRecipeCommand = $this->makeRunRecipeCommand($io, \getcwd());
-        $runRecipeCommand->execute($recipeFilename, new MixedCollection());
+        $runRecipeCommand = $this->makeRunRecipeCommand($io, $this->getWorkingDirFromPath($recipeFilename));
+        $runRecipeCommand->execute($this->getRecipeFilenameFromPath($recipeFilename), new MixedCollection());
     }
 
     private function makeRunRecipeCommand(ConsoleIO $io, string $workingDir): RunRecipeCommand
@@ -69,5 +70,24 @@ class RunCommand extends Command
         $commonRecipeVariableGenerator = new CommonRecipeVariableGenerator($recipeRunner, $workingDirectory, $currentDirectoryProvider);
 
         return new RunRecipeCommand($dependencyManager, $recipeRunner, $recipeNameExtractor, $commonRecipeVariableGenerator, $io);
+    }
+
+    private function getRecipeFilenameFromPath(string $recipeFilename): string
+    {
+        $fileInfo = new \SplFileInfo($recipeFilename);
+
+        return $fileInfo->getFilename();
+    }
+
+    private function getWorkingDirFromPath(string $recipeFilename): string
+    {
+        $fileInfo = new \SplFileInfo($recipeFilename);
+        $directory = $fileInfo->getPath();
+
+        if ($directory === "") {
+            $directory = \getcwd();
+        }
+
+        return $directory;
     }
 }
