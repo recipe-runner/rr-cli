@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace RecipeRunner\Cli\Test\Infrastructure;
+namespace RecipeRunner\Cli\Test\Adapter;
 
 use PHPUnit\Framework\TestCase;
-use RecipeRunner\Cli\Infrastructure\ConsoleIO;
+use RecipeRunner\Cli\Adapter\ConsoleIO;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;

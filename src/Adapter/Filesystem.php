@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace RecipeRunner\Cli\Infrastructure;
+namespace RecipeRunner\Cli\Adapter;
 
 use RecipeRunner\Cli\Core\Filesystem\FilesystemInterface;
 use Symfony\Component\Filesystem\Exception\FileNotFoundException;
