@@ -12,7 +12,7 @@
 namespace RecipeRunner\Cli\Core\WorkingDirectory;
 
 use InvalidArgumentException;
-use RecipeRunner\Cli\Core\Filesystem\FilesystemInterface;
+use RecipeRunner\Cli\Core\Port\FilesystemInterface;
 
 class WorkingDirectory
 {

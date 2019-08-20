@@ -13,7 +13,7 @@ namespace RecipeRunner\Cli\Test\Core\DependencyManager;
 
 use PHPUnit\Framework\TestCase;
 use RecipeRunner\Cli\Core\DependencyManager\DependencyManager;
-use RecipeRunner\Cli\Core\Process\ProcessInterface;
+use RecipeRunner\Cli\Core\Port\ProcessInterface;
 use RecipeRunner\Cli\Core\WorkingDirectory\WorkingDirectory;
 
 class DependencyManagerTest extends TestCase

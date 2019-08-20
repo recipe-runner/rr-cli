@@ -12,7 +12,7 @@
 namespace RecipeRunner\Cli\Test\Core\RecipeVariable;
 
 use PHPUnit\Framework\TestCase;
-use RecipeRunner\Cli\Core\RecipeRunner\RecipeRunnerManagerInterface;
+use RecipeRunner\Cli\Core\Port\RecipeRunner\RecipeRunnerManagerInterface;
 use RecipeRunner\Cli\Core\RecipeVariable\CommonRecipeVariableGenerator;
 use RecipeRunner\Cli\Core\RecipeVariable\CurrentDirectoryProviderInterface;
 use RecipeRunner\Cli\Core\WorkingDirectory\WorkingDirectory;

@@ -11,7 +11,7 @@
 
 namespace RecipeRunner\Cli\Core\DependencyManager;
 
-use RecipeRunner\Cli\Core\Process\ProcessInterface;
+use RecipeRunner\Cli\Core\Port\ProcessInterface;
 use RecipeRunner\Cli\Core\WorkingDirectory\WorkingDirectory;
 use RuntimeException;
 

@@ -11,7 +11,7 @@
 
 namespace RecipeRunner\Cli\Adapter;
 
-use RecipeRunner\Cli\Core\Process\ProcessInterface;
+use RecipeRunner\Cli\Core\Port\ProcessInterface;
 use RecipeRunner\RecipeRunner\IO\IOInterface;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\ExecutableFinder;

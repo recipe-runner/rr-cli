@@ -11,7 +11,7 @@
 
 namespace RecipeRunner\Cli\Adapter;
 
-use RecipeRunner\Cli\Core\Filesystem\FilesystemInterface;
+use RecipeRunner\Cli\Core\Port\FilesystemInterface;
 use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem as FilesystemBase;

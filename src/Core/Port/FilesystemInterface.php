@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace RecipeRunner\Cli\Core\Filesystem;
+namespace RecipeRunner\Cli\Core\Port;
 
 /**
  * Interface for accessing filesystem.

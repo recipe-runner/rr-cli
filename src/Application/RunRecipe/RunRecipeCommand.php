@@ -13,7 +13,7 @@ namespace RecipeRunner\Cli\Application\RunRecipe;
 
 use RecipeRunner\Cli\Application\RunRecipe\RecipeNameExtractor;
 use RecipeRunner\Cli\Core\DependencyManager\DependencyManager;
-use RecipeRunner\Cli\Core\RecipeRunner\RecipeRunnerManagerInterface;
+use RecipeRunner\Cli\Core\Port\RecipeRunner\RecipeRunnerManagerInterface;
 use RecipeRunner\Cli\Core\RecipeVariable\RecipeVariableGeneratorInterface;
 use RecipeRunner\RecipeRunner\IO\IOInterface;
 use Yosymfony\Collection\CollectionInterface;

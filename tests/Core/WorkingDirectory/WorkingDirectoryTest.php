@@ -12,7 +12,7 @@
 namespace RecipeRunner\Cli\Test\Core\WorkingDirectory;
 
 use PHPUnit\Framework\TestCase;
-use RecipeRunner\Cli\Core\Filesystem\FilesystemInterface;
+use RecipeRunner\Cli\Core\Port\FilesystemInterface;
 use RecipeRunner\Cli\Core\WorkingDirectory\WorkingDirectory;
 
 class WorkingDirectoryTest extends TestCase

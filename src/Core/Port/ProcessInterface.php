@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace RecipeRunner\Cli\Core\Process;
+namespace RecipeRunner\Cli\Core\Port;
 
 /**
  * Interface for executing shell commands.

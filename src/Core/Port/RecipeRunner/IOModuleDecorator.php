@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace RecipeRunner\Cli\Core\RecipeRunner;
+namespace RecipeRunner\Cli\Core\Port\RecipeRunner;
 
 use InvalidArgumentException;
 use RecipeRunner\RecipeRunner\IO\IOInterface;

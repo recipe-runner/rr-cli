@@ -11,7 +11,7 @@
 
 namespace RecipeRunner\Cli\Core\RecipeVariable;
 
-use RecipeRunner\Cli\Core\RecipeRunner\RecipeRunnerManagerInterface;
+use RecipeRunner\Cli\Core\Port\RecipeRunner\RecipeRunnerManagerInterface;
 use RecipeRunner\Cli\Core\WorkingDirectory\WorkingDirectory;
 use Yosymfony\Collection\CollectionInterface;
 use Yosymfony\Collection\MixedCollection;

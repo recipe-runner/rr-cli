@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace RecipeRunner\Cli\Core\RecipeRunner;
+namespace RecipeRunner\Cli\Core\Port\RecipeRunner;
 
 use RecipeRunner\RecipeRunner\Definition\RecipeDefinition;
 use RecipeRunner\RecipeRunner\IO\IOInterface;

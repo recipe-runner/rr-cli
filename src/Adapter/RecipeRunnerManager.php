@@ -12,11 +12,11 @@
 namespace RecipeRunner\Cli\Adapter;
 
 use InvalidArgumentException;
-use RecipeRunner\Cli\Core\RecipeRunner\IOActionParserDecorator;
-use RecipeRunner\Cli\Core\RecipeRunner\IOModuleDecorator;
-use RecipeRunner\Cli\Core\RecipeRunner\IORecipeParserDecorator;
-use RecipeRunner\Cli\Core\RecipeRunner\IOStepParserDecorator;
-use RecipeRunner\Cli\Core\RecipeRunner\RecipeRunnerManagerInterface;
+use RecipeRunner\Cli\Core\Port\RecipeRunner\IOActionParserDecorator;
+use RecipeRunner\Cli\Core\Port\RecipeRunner\IOModuleDecorator;
+use RecipeRunner\Cli\Core\Port\RecipeRunner\IORecipeParserDecorator;
+use RecipeRunner\Cli\Core\Port\RecipeRunner\IOStepParserDecorator;
+use RecipeRunner\Cli\Core\Port\RecipeRunner\RecipeRunnerManagerInterface;
 use RecipeRunner\Cli\Core\WorkingDirectory\WorkingDirectory;
 use RecipeRunner\RecipeRunner\Adapter\Expression\SymfonyExpressionLanguage;
 use RecipeRunner\RecipeRunner\Block\Action\ActionParser;

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace RecipeRunner\Cli\Core\RecipeRunner;
+namespace RecipeRunner\Cli\Core\Port\RecipeRunner;
 
 use RecipeRunner\RecipeRunner\Block\Action\ActionParserInterface;
 use RecipeRunner\RecipeRunner\Block\BlockResult;
