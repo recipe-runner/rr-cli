@@ -1,3 +1,4 @@
 vendor/
 .rr/
+.php_cs.cache
 phpunit.xml

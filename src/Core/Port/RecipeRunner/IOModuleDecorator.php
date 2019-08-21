@@ -21,7 +21,7 @@ use RecipeRunner\RecipeRunner\IO\IOInterface;
  */
 final class IOModuleDecorator implements IOInterface
 {
-    /** @var int */
+    /** @var string */
     private $margin;
 
     /** @var bool */

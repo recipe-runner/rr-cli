@@ -12,6 +12,7 @@
 namespace RecipeRunner\Cli\Adapter;
 
 use RecipeRunner\Cli\Core\RecipeVariable\CurrentDirectoryProviderInterface;
+use RuntimeException;
 
 /**
  * Current directory provider.
@@ -25,6 +26,12 @@ class CurrentDirectoryProvider implements CurrentDirectoryProviderInterface
      */
     public function getCurrentDirectory(): string
     {
-        return \getcwd();
+        $directory = \getcwd();
+
+        if ($directory === false) {
+            throw new RuntimeException('Error resolving the current directory.');
+        }
+
+        return $directory;
     }
 }

@@ -43,7 +43,7 @@ class DependencyManager
     /**
      * Updates dependencies presents in the directory.
      *
-     * @param string $dir
+     * @param string $recipeName The name of the recipe.
      *
      * @return void
      */
@@ -133,7 +133,13 @@ class DependencyManager
     {
         $composerArray = ['require' => $nameVersionPairs, 'minimum-stability' => 'dev'];
 
-        return \json_encode($composerArray);
+        $json = \json_encode($composerArray);
+
+        if ($json === false) {
+            throw new RuntimeException('Error generating the manifest file for Composer.');
+        }
+        
+        return $json;
     }
 
     private function guessComposerExecutablePath(): string

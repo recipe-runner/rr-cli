@@ -36,7 +36,7 @@ interface FilesystemInterface
     /**
      * Checks if a file exists.
      *
-     * @param bool $filename
+     * @param string $filename The file to check.
      *
      * @return bool
      */

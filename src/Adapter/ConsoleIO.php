@@ -148,6 +148,6 @@ final class ConsoleIO implements IOInterface
 
     private function convertAttemptValue(int $attempts): ?int
     {
-        return $attempts != self::INFINITE_ATTEMPTS ?: null;
+        return $attempts != self::INFINITE_ATTEMPTS ? $attempts : null;
     }
 }

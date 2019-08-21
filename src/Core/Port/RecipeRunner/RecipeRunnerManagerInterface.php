@@ -21,7 +21,8 @@ interface RecipeRunnerManagerInterface
     /**
      * Returns a list of dependencies required for executing a recipe.
      *
-     * @param string @recipeName The name of the recipe. e.g: recipe.yml
+     * @param string $recipeName The name of the recipe. e.g: recipe.yml
+     *
      * @return array Key-value list with the package name as key and the version as value.
      * E.g: ['recipe-runner/io-module' => '1.0.x-dev']
      */

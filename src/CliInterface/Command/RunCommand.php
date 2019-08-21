@@ -11,16 +11,17 @@
 
 namespace RecipeRunner\Cli\CliInterface\Command;
 
-use RecipeRunner\Cli\Application\RunRecipe\RecipeNameExtractor;
-use RecipeRunner\Cli\Application\RunRecipe\RunRecipeCommand;
-use RecipeRunner\Cli\Core\DependencyManager\DependencyManager;
-use RecipeRunner\Cli\Core\RecipeVariable\CommonRecipeVariableGenerator;
-use RecipeRunner\Cli\Core\WorkingDirectory\WorkingDirectory;
 use RecipeRunner\Cli\Adapter\ConsoleIO;
 use RecipeRunner\Cli\Adapter\CurrentDirectoryProvider;
 use RecipeRunner\Cli\Adapter\Filesystem;
 use RecipeRunner\Cli\Adapter\Process;
 use RecipeRunner\Cli\Adapter\RecipeRunnerManager;
+use RecipeRunner\Cli\Application\RunRecipe\RecipeNameExtractor;
+use RecipeRunner\Cli\Application\RunRecipe\RunRecipeCommand;
+use RecipeRunner\Cli\Core\DependencyManager\DependencyManager;
+use RecipeRunner\Cli\Core\RecipeVariable\CommonRecipeVariableGenerator;
+use RecipeRunner\Cli\Core\WorkingDirectory\WorkingDirectory;
+use RuntimeException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Helper\QuestionHelper;
@@ -85,7 +86,8 @@ class RunCommand extends Command
         $directory = $fileInfo->getPath();
 
         if ($directory === "") {
-            $directory = \getcwd();
+            $currentDirectoryProvider = new CurrentDirectoryProvider();
+            $directory = $currentDirectoryProvider->getCurrentDirectory();
         }
 
         return $directory;

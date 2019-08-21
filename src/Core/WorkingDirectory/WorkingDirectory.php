@@ -84,7 +84,6 @@ class WorkingDirectory
     /**
      * Reads a file.
      *
-     * @param string $recipeName The name of the recipe.
      * @param string $filename
      *
      * @return string The content of the file.
