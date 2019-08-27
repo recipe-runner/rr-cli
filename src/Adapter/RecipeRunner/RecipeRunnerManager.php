@@ -9,14 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace RecipeRunner\Cli\Adapter;
+namespace RecipeRunner\Cli\Adapter\RecipeRunner;
 
 use InvalidArgumentException;
-use RecipeRunner\Cli\Core\Port\RecipeRunner\IOActionParserDecorator;
-use RecipeRunner\Cli\Core\Port\RecipeRunner\IOModuleDecorator;
-use RecipeRunner\Cli\Core\Port\RecipeRunner\IORecipeParserDecorator;
-use RecipeRunner\Cli\Core\Port\RecipeRunner\IOStepParserDecorator;
-use RecipeRunner\Cli\Core\Port\RecipeRunner\RecipeRunnerManagerInterface;
+use RecipeRunner\Cli\Adapter\RecipeRunner\IOActionParserDecorator;
+use RecipeRunner\Cli\Adapter\RecipeRunner\IORecipeParserDecorator;
+use RecipeRunner\Cli\Adapter\RecipeRunner\IOStepParserDecorator;
+use RecipeRunner\Cli\Core\Port\RecipeRunnerManagerInterface;
 use RecipeRunner\Cli\Core\WorkingDirectory\WorkingDirectory;
 use RecipeRunner\RecipeRunner\Adapter\Expression\SymfonyExpressionLanguage;
 use RecipeRunner\RecipeRunner\Block\Action\ActionParser;
@@ -36,7 +35,7 @@ use Yosymfony\Collection\CollectionInterface;
 use Yosymfony\Collection\MixedCollection;
 
 /**
- * Represent the actions availables with Recipe Runner core.
+ * Represent the actions available with Recipe Runner core.
  *
  * @author Víctor Puertas <vpgugr@gmail.com>
  */

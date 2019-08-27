@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace RecipeRunner\Cli\Core\Port\RecipeRunner;
+namespace RecipeRunner\Cli\Adapter\RecipeRunner;
 
 use RecipeRunner\RecipeRunner\Block\Action\ActionParserInterface;
 use RecipeRunner\RecipeRunner\Block\BlockResult;
@@ -58,9 +58,8 @@ final class IOActionParserDecorator implements ActionParserInterface
             return "<fg=white;bg=red>ERROR ($iterationsString)</>";
         }
         
-        if ($blockResult->isSkipped())
-        {
-            return "<fg=white;bg=yellow>Skipped ($iterationsString)</>";    
+        if ($blockResult->isSkipped()) {
+            return "<fg=white;bg=yellow>Skipped ($iterationsString)</>";
         }
         
         return "<fg=black;bg=green>OK ($iterationsString)</>";

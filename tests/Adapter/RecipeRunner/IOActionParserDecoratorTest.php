@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace RecipeRunner\Cli\Test\Core\Port\RecipeRunner;
+namespace RecipeRunner\Cli\Test\Adapter\RecipeRunner;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use RecipeRunner\Cli\Core\Port\RecipeRunner\IOActionParserDecorator;
+use RecipeRunner\Cli\Adapter\RecipeRunner\IOActionParserDecorator;
 use RecipeRunner\RecipeRunner\Block\Action\ActionParserInterface;
 use RecipeRunner\RecipeRunner\Definition\ActionDefinition;
 use RecipeRunner\RecipeRunner\IO\IOInterface;

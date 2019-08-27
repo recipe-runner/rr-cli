@@ -16,7 +16,7 @@ use PHPUnit\Framework\TestCase;
 use RecipeRunner\Cli\Application\RunRecipe\RecipeNameExtractor;
 use RecipeRunner\Cli\Application\RunRecipe\RunRecipeCommand;
 use RecipeRunner\Cli\Core\DependencyManager\DependencyManager;
-use RecipeRunner\Cli\Core\Port\RecipeRunner\RecipeRunnerManagerInterface;
+use RecipeRunner\Cli\Core\Port\RecipeRunnerManagerInterface;
 use RecipeRunner\Cli\Core\RecipeVariable\RecipeVariableGeneratorInterface;
 use RecipeRunner\RecipeRunner\IO\IOInterface;
 use Yosymfony\Collection\MixedCollection;

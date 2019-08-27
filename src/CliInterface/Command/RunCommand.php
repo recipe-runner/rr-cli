@@ -15,7 +15,7 @@ use RecipeRunner\Cli\Adapter\ConsoleIO;
 use RecipeRunner\Cli\Adapter\CurrentDirectoryProvider;
 use RecipeRunner\Cli\Adapter\Filesystem;
 use RecipeRunner\Cli\Adapter\Process;
-use RecipeRunner\Cli\Adapter\RecipeRunnerManager;
+use RecipeRunner\Cli\Adapter\RecipeRunner\RecipeRunnerManager;
 use RecipeRunner\Cli\Application\RunRecipe\RecipeNameExtractor;
 use RecipeRunner\Cli\Application\RunRecipe\RunRecipeCommand;
 use RecipeRunner\Cli\Core\DependencyManager\DependencyManager;
