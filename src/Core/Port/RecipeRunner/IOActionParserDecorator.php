@@ -54,10 +54,15 @@ final class IOActionParserDecorator implements ActionParserInterface
             $iterationsString.'s';
         }
 
-        if (!$blockResult->hasError()) {
-            return "<fg=black;bg=green>OK ($iterationsString)</>";
+        if ($blockResult->isFailed()) {
+            return "<fg=white;bg=red>ERROR ($iterationsString)</>";
         }
-
-        return "<fg=white;bg=red>ERROR ($iterationsString)</>";
+        
+        if ($blockResult->isSkipped())
+        {
+            return "<fg=white;bg=yellow>Skipped ($iterationsString)</>";    
+        }
+        
+        return "<fg=black;bg=green>OK ($iterationsString)</>";
     }
 }
