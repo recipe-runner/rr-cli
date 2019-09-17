@@ -21,7 +21,7 @@ use Symfony\Component\Console\Application as BaseApplication;
  */
 class Application extends BaseApplication
 {
-    const VERSION = '0.0.1';
+    const VERSION = '1.0.0-alpha1';
 
     private static $logo = '
     ____     ___    __  ____  ____   ___      ____  __ __  ____   ____     ___  ____      
