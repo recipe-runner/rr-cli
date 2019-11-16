@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "af9cb7004d435fde1fc952a2325b01f6",
+    "content-hash": "183af5edda6a329367114124da9e8724",
     "packages": [
         {
             "name": "psr/cache",
@@ -154,19 +154,19 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/recipe-runner/recipe-runner.git",
-                "reference": "b83c341b57e77d66f592d963764332226be56562"
+                "reference": "b1cf53551588c9eeaca2efbcb1c36fcbc6a8be7d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/recipe-runner/recipe-runner/zipball/b83c341b57e77d66f592d963764332226be56562",
-                "reference": "b83c341b57e77d66f592d963764332226be56562",
+                "url": "https://api.github.com/repos/recipe-runner/recipe-runner/zipball/b1cf53551588c9eeaca2efbcb1c36fcbc6a8be7d",
+                "reference": "b1cf53551588c9eeaca2efbcb1c36fcbc6a8be7d",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.2",
+                "php": "^7.3",
                 "symfony/expression-language": "^4.2",
                 "symfony/yaml": "^4.2",
-                "yosymfony/collection": "^1.1"
+                "yosymfony/collection": "^2.0"
             },
             "require-dev": {
                 "phpstan/phpstan": "^0.10.4",
@@ -198,7 +198,7 @@
             "keywords": [
                 "yaml"
             ],
-            "time": "2019-09-17T15:01:04+00:00"
+            "time": "2019-11-16T23:07:25+00:00"
         },
         {
             "name": "symfony/cache",
@@ -915,28 +915,28 @@
         },
         {
             "name": "yosymfony/collection",
-            "version": "v1.2.0",
+            "version": "v2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yosymfony/collection.git",
-                "reference": "1f12083f8816f68130d661f9230e75f30a53dfc9"
+                "reference": "17abc7e24b07b1253c625e5eb5a94fb740d32f01"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yosymfony/collection/zipball/1f12083f8816f68130d661f9230e75f30a53dfc9",
-                "reference": "1f12083f8816f68130d661f9230e75f30a53dfc9",
+                "url": "https://api.github.com/repos/yosymfony/collection/zipball/17abc7e24b07b1253c625e5eb5a94fb740d32f01",
+                "reference": "17abc7e24b07b1253c625e5eb5a94fb740d32f01",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.2"
+                "php": ">=7.3"
             },
             "require-dev": {
-                "phpunit/phpunit": "^7"
+                "phpunit/phpunit": "^8"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0-dev"
+                    "dev-master": "2.0-dev"
                 }
             },
             "autoload": {
@@ -961,7 +961,7 @@
                 "array",
                 "collection"
             ],
-            "time": "2019-06-19T15:26:02+00:00"
+            "time": "2019-10-07T15:28:42+00:00"
         }
     ],
     "packages-dev": [
